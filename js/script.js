@@ -21,11 +21,25 @@ $("#other-title").hide();
 //*************************************
 //T-Shirt Info functionality:
 //
+//hide all color options
+$('#color option').hide();
 //setup select input listener on "Design"
 $("#design").change(function (e) {
   const $design = $(this).val();
-  const $colorOption4 = $('#color option')[3];
+  //conditionally show Color values based on Theme selection
   if ($design == 'js puns') {
-    $colorOption4.hide();
+    $("#color option[value='tomato']").hide();
+    $("#color option[value='steelblue']").hide();
+    $("#color option[value='dimgrey']").hide();
+    $("#color option[value='cornflowerblue']").show();
+    $("#color option[value='darkslategrey']").show();
+    $("#color option[value='gold']").show();
+  } else if ($design == 'heart js') {
+    $("#color option[value='cornflowerblue']").hide();
+    $("#color option[value='darkslategrey']").hide();
+    $("#color option[value='gold']").hide();
+    $("#color option[value='tomato']").show();
+    $("#color option[value='steelblue']").show();
+    $("#color option[value='dimgrey']").show();
   }
 })
