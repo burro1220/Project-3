@@ -63,4 +63,30 @@ $("input[type='checkbox']").change(function (e) {
   setupCheckboxes('input[name="express"]', 'input[name="js-frameworks"]');
   setupCheckboxes('input[name="js-libs"]', 'input[name="node"]');
   setupCheckboxes('input[name="node"]', 'input[name="js-libs"]');
+  //Total Cost functionality
+  let $totalCost = 0;
+  if($('input[name="all"]').is(':checked')) {
+    $totalCost += 200;
+  }
+  if($('input[name="js-frameworks"]').is(':checked')) {
+    $totalCost += 100;
+  }
+  if($('input[name="js-libs"]').is(':checked')) {
+    $totalCost += 100;
+  }
+  if($('input[name="express"]').is(':checked')) {
+    $totalCost += 100;
+  }
+  if($('input[name="node"]').is(':checked')) {
+    $totalCost += 100;
+  }
+  if($('input[name="build-tools"]').is(':checked')) {
+    $totalCost += 100;
+  }
+  if($('input[name="npm"]').is(':checked')) {
+    $totalCost += 100;
+  }
+    let elem = $("<p></p>").text("Text."); 
+    $('fieldset')[2].append(elem);
+
 });
