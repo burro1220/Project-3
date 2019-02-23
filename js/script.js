@@ -2,6 +2,8 @@
 //
 // focus on name field when page loads
 $("#name").focus();
+// select credit card payment by default
+$('select option[value="credit card"]').attr("selected",true);
 //hide other job role input field
 $("#other-title").hide();
 //*************************************
@@ -95,5 +97,28 @@ $("input[type='checkbox']").change(function (e) {
 //*************************************
 //Payment functionality
 //
-
-//setup event listener for checkboxes
+//default settings
+$('#payment option').eq(0).hide();
+$('#credit-card').next().hide();
+$('#credit-card').next().next().hide();
+//setup event listener for select payment and show info based on selection
+$("#payment").change(function (e) {
+  const $paymentMethod = $(this).val();
+  if ($paymentMethod == 'credit card'){
+    $('#credit-card').show();
+    $('#credit-card').next().hide();
+    $('#credit-card').next().next().hide();
+  } else if($paymentMethod == 'paypal'){
+    $('#credit-card').hide();
+    $('#credit-card').next().show();
+    $('#credit-card').next().next().hide();
+  } else {
+    $('#credit-card').hide();
+    $('#credit-card').next().hide();
+    $('#credit-card').next().next().show();
+  }
+});
+//*************************************
+//Form validation functionality
+//
+//
