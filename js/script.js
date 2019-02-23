@@ -42,4 +42,39 @@ $("#design").change(function (e) {
     $("#color option[value='steelblue']").show();
     $("#color option[value='dimgrey']").show();
   }
+});
+//*************************************
+//Register for Activities functionality
+//
+//setup event listener for checkboxes
+$("input[type='checkbox']").change(function (e) {
+  if ( $('input[name="js-frameworks"]').is(':checked') ) {
+    $('input[name="express"]').attr("disabled", true);
+    $('input[name="express"]').parent().addClass('lighten');
+  } else {
+    $('input[name="express"]').attr("disabled", false);
+    $('input[name="express"]').parent().removeClass('lighten');
+  }
+  if ( $('input[name="express"]').is(':checked') ) {
+    $('input[name="js-frameworks"]').attr("disabled", true);
+    $('input[name="js-frameworks"]').parent().addClass('lighten');
+  } else {
+    $('input[name="js-frameworks"]').attr("disabled", false);
+    $('input[name="js-frameworks"]').parent().removeClass('lighten');
+  }
+  if ( $('input[name="js-libs"]').is(':checked') ) {
+    $('input[name="node"]').attr("disabled", true);
+    $('input[name="node"]').parent().addClass('lighten');
+  } else {
+    $('input[name="node"]').attr("disabled", false);
+    $('input[name="node"]').parent().removeClass('lighten');
+  }
+  if ( $('input[name="node"]').is(':checked') ) {
+    $('input[name="js-libs"]').attr("disabled", true);
+    $('input[name="js-libs"]').parent().addClass('lighten');
+  } else {
+    $('input[name="js-libs"]').attr("disabled", false);
+    $('input[name="js-libs"]').parent().removeClass('lighten');
+  }
+
 })
