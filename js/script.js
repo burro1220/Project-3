@@ -28,16 +28,14 @@ $("#design").change(function (e) {
   const $design = $(this).val();
   //conditionally show Color values based on Theme selection
   if ($design == 'js puns') {
-    $("#color option[value='tomato']").hide();
-    $("#color option[value='steelblue']").hide();
     $("#color option[value='dimgrey']").hide();
     $("#color option[value='cornflowerblue']").show();
     $("#color option[value='darkslategrey']").show();
     $("#color option[value='gold']").show();
   } else if ($design == 'heart js') {
-    $("#color option[value='cornflowerblue']").hide();
-    $("#color option[value='darkslategrey']").hide();
-    $("#color option[value='gold']").hide();
+   $("#color option[value='cornflowerblue']").hide();
+   $("#color option[value='darkslategrey']").hide();
+   $("#color option[value='gold']").hide();
     $("#color option[value='tomato']").show();
     $("#color option[value='steelblue']").show();
     $("#color option[value='dimgrey']").show();
@@ -46,6 +44,7 @@ $("#design").change(function (e) {
 //*************************************
 //Register for Activities functionality
 //
+
 //setup event listener for checkboxes
 $("input[type='checkbox']").change(function (e) {
   //disable and lighten unavailable options based on input
@@ -86,7 +85,7 @@ $("input[type='checkbox']").change(function (e) {
   if($('input[name="npm"]').is(':checked')) {
     $totalCost += 100;
   }
-    let elem = $("<p></p>").text("Text."); 
-    $('fieldset')[2].append(elem);
-
+  //create and append div beneath fieldset[2] to hold $totalCost;
+  const $fieldSet = $('fieldset')[2];
+  $fieldSet.append('<div><div>');
 });
