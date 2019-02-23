@@ -48,33 +48,19 @@ $("#design").change(function (e) {
 //
 //setup event listener for checkboxes
 $("input[type='checkbox']").change(function (e) {
-  if ( $('input[name="js-frameworks"]').is(':checked') ) {
-    $('input[name="express"]').attr("disabled", true);
-    $('input[name="express"]').parent().addClass('lighten');
-  } else {
-    $('input[name="express"]').attr("disabled", false);
-    $('input[name="express"]').parent().removeClass('lighten');
-  }
-  if ( $('input[name="express"]').is(':checked') ) {
-    $('input[name="js-frameworks"]').attr("disabled", true);
-    $('input[name="js-frameworks"]').parent().addClass('lighten');
-  } else {
-    $('input[name="js-frameworks"]').attr("disabled", false);
-    $('input[name="js-frameworks"]').parent().removeClass('lighten');
-  }
-  if ( $('input[name="js-libs"]').is(':checked') ) {
-    $('input[name="node"]').attr("disabled", true);
-    $('input[name="node"]').parent().addClass('lighten');
-  } else {
-    $('input[name="node"]').attr("disabled", false);
-    $('input[name="node"]').parent().removeClass('lighten');
-  }
-  if ( $('input[name="node"]').is(':checked') ) {
-    $('input[name="js-libs"]').attr("disabled", true);
-    $('input[name="js-libs"]').parent().addClass('lighten');
-  } else {
-    $('input[name="js-libs"]').attr("disabled", false);
-    $('input[name="js-libs"]').parent().removeClass('lighten');
-  }
-
-})
+  //disable and lighten unavailable options based on input
+  function setupCheckboxes(elem1, elem2) {
+    if ( $(elem1).is(':checked') ) {
+      $(elem2).attr("disabled", true);
+      $(elem2).parent().addClass('lighten');
+    } else {
+      $(elem2).attr("disabled", false);
+      $(elem2).parent().removeClass('lighten');
+    }
+  };
+  //use FX to disable and lighten unavailable options based on input
+  setupCheckboxes('input[name="js-frameworks"]', 'input[name="express"]');
+  setupCheckboxes('input[name="express"]', 'input[name="js-frameworks"]');
+  setupCheckboxes('input[name="js-libs"]', 'input[name="node"]');
+  setupCheckboxes('input[name="node"]', 'input[name="js-libs"]');
+});
