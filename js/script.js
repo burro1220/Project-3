@@ -85,7 +85,15 @@ $("input[type='checkbox']").change(function (e) {
   if($('input[name="npm"]').is(':checked')) {
     $totalCost += 100;
   }
+  //Remove Total Cost if present
+  $('#totalCost').remove();
   //create and append div beneath fieldset[2] to hold $totalCost;
-  const $fieldSet = $('fieldset')[2];
-  $fieldSet.append('<div><div>');
+  const elem = "<div id='totalCost'>Total Cost: $" + $totalCost + "</div>"
+  const $fieldSet = $('fieldset').eq(2);
+  $fieldSet.append(elem);
 });
+//*************************************
+//Payment functionality
+//
+
+//setup event listener for checkboxes

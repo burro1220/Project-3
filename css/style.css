@@ -184,3 +184,7 @@ button:hover {
 .lighten {
   opacity: .5;
 }
+#totalCost {
+  font-weight: bold;
+  color: red;
+}
