@@ -13,6 +13,9 @@ $("#name").focus();
 $('select option[value="credit card"]').attr("selected", true);
 //hide other job role input field
 $("#other-title").hide();
+//setup div to show onSubmit errors for form validation
+const $elem = "<div id='error'></div>";
+$("button[type='submit']").prev().append($elem);
 //*************************************
 //show 'other' job role text input when 'other' is selected:
 //
@@ -164,36 +167,37 @@ $('#mail').on('input', function(e) {
 //credit card number
 $('#cc-num').on('input', function(e) {
   //check for valid credit card num and append error if needed
-  let $email = $(e.target).val();
-  let $regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-  if ($regex.test($email)) {
-      $('.error').remove();
-      $emailIsValid = true;
+  let $ccNumIsValid = false;
+  let $ccNum = $(e.target).val();
+  let $regex = /^\d+$/;
+  //console.log($regex.test($ccNum));
+  if ($regex.test($ccNum)) {
+      $('#error').remove();
+      $ccNumIsValid = true;
+      //console.log($regex.test($ccNum));
   }
   else {
-      $('.error').remove();
-      $('#mail').prev().append("<span class = 'error'>  Please enter a valid email address.</span>");
-      $emailIsValid = false;
+      $('#error').remove();
+      $('#error').text('Please enter a valid credit card number.');
+      $ccNumIsValid = false;
+      //console.log($regex.test($ccNum));
   }
 });
-//setup div to show onSubmit errors for form validation
-const $elem = "<div id='error'></div>";
-$("button[type='submit']").prev().append($elem);
 //click handler on submit button tht validates form before submitting
 $("button[type='submit']").on('click', function(e) {
     //check name field and handle error
     if($nameIsValid === false){
-      $('#error').text('Please enter a first and last name.')
+      $('#error').text('Please enter a first and last name.');
       e.preventDefault();
     };
     //check email field and handle error
     if($emailIsValid === false) {
-      $('#error').text('Please enter a valid email address.')
+      $('#error').text('Please enter a valid email address.');
       e.preventDefault();
     };
     //check to make sure at least one activity is checked
     if ( $("input:checked").length === 0){
-      $('#error').text('Please select at least one activity.')
+      $('#error').text('Please select at least one activity.');
       e.preventDefault();
     };
     if ($paymentMethod == 'credit card'){
