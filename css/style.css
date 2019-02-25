@@ -186,5 +186,14 @@ button:hover {
 }
 #totalCost {
   font-weight: bold;
+  color: green;
+}
+.error {
+  font-weight: bold;
+  color: red;
+}
+#error {
+  font-weight: bold;
+  font-size: 1.2em;
   color: red;
 }

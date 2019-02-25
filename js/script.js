@@ -1,9 +1,16 @@
+
+//global variables to validate form
+let $nameIsValid = false;
+let $emailIsValid = false;
+let $checkboxIsValid = false;
+let $creditcardIsValid = true;
+let $paymentMethod = 'credit card';
 //setup page:
 //
 // focus on name field when page loads
 $("#name").focus();
 // select credit card payment by default
-$('select option[value="credit card"]').attr("selected",true);
+$('select option[value="credit card"]').attr("selected", true);
 //hide other job role input field
 $("#other-title").hide();
 //*************************************
@@ -103,11 +110,12 @@ $('#credit-card').next().hide();
 $('#credit-card').next().next().hide();
 //setup event listener for select payment and show info based on selection
 $("#payment").change(function (e) {
-  const $paymentMethod = $(this).val();
+  $paymentMethod = $(this).val();
   if ($paymentMethod == 'credit card'){
     $('#credit-card').show();
     $('#credit-card').next().hide();
     $('#credit-card').next().next().hide();
+    return $paymentMethod;
   } else if($paymentMethod == 'paypal'){
     $('#credit-card').hide();
     $('#credit-card').next().show();
@@ -121,4 +129,77 @@ $("#payment").change(function (e) {
 //*************************************
 //Form validation functionality
 //
+//setup event handler on name input
+$('#name').on('input', function(e) {
+  //check for valid name and append error if needed
+  let $name = $(e.target).val();
+  let $regex = /^[a-zA-Z ]{2,30}$/;
+  if($regex.test($name)) {
+      $('.error').remove();
+      $nameIsValid = true;
+  }
+  else {
+      $('.error').remove();
+      $('#name').prev().append("<span class = 'error'>  Please enter a valid first and last name.</span>");
+      $nameIsValid = false;
+  }
+});
+//setup event handler on email input
 //
+$('#mail').on('input', function(e) {
+  //check for valid email and append error if needed
+  let $email = $(e.target).val();
+  let $regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  if ($regex.test($email)) {
+      $('.error').remove();
+      $emailIsValid = true;
+  }
+  else {
+      $('.error').remove();
+      $('#mail').prev().append("<span class = 'error'>  Please enter a valid email address.</span>");
+      $emailIsValid = false;
+  }
+});
+//Credit Card validation
+//credit card number
+$('#cc-num').on('input', function(e) {
+  //check for valid credit card num and append error if needed
+  let $email = $(e.target).val();
+  let $regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  if ($regex.test($email)) {
+      $('.error').remove();
+      $emailIsValid = true;
+  }
+  else {
+      $('.error').remove();
+      $('#mail').prev().append("<span class = 'error'>  Please enter a valid email address.</span>");
+      $emailIsValid = false;
+  }
+});
+//setup div to show onSubmit errors for form validation
+const $elem = "<div id='error'></div>";
+$("button[type='submit']").prev().append($elem);
+//click handler on submit button tht validates form before submitting
+$("button[type='submit']").on('click', function(e) {
+    //check name field and handle error
+    if($nameIsValid === false){
+      $('#error').text('Please enter a first and last name.')
+      e.preventDefault();
+    };
+    //check email field and handle error
+    if($emailIsValid === false) {
+      $('#error').text('Please enter a valid email address.')
+      e.preventDefault();
+    };
+    //check to make sure at least one activity is checked
+    if ( $("input:checked").length === 0){
+      $('#error').text('Please select at least one activity.')
+      e.preventDefault();
+    };
+    if ($paymentMethod == 'credit card'){
+      e.preventDefault();
+    }
+
+
+
+})
