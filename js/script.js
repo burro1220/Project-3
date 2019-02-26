@@ -2,8 +2,9 @@
 //global variables to validate form
 let $nameIsValid = false;
 let $emailIsValid = false;
-let $checkboxIsValid = false;
-let $creditcardIsValid = true;
+let $ccNumIsValid = false;
+let $ccZipIsValid = false;
+let ccCvvIsValid = false;
 let $paymentMethod = 'credit card';
 //setup page:
 //
@@ -33,21 +34,24 @@ $("button[type='submit']").prev().append($elem);
 //*************************************
 //T-Shirt Info functionality:
 //
-//hide all color options
-$('#color option').hide();
+//hide color options menu until deisgn is selected
+$('#color').hide();
 //setup select input listener on "Design"
 $("#design").change(function (e) {
   const $design = $(this).val();
+  $('#color').show();
   //conditionally show Color values based on Theme selection
   if ($design == 'js puns') {
     $("#color option[value='dimgrey']").hide();
+    $("#color option[value='tomato']").hide();
+    $("#color option[value='steelblue']").hide();
     $("#color option[value='cornflowerblue']").show();
     $("#color option[value='darkslategrey']").show();
     $("#color option[value='gold']").show();
   } else if ($design == 'heart js') {
-   $("#color option[value='cornflowerblue']").hide();
-   $("#color option[value='darkslategrey']").hide();
-   $("#color option[value='gold']").hide();
+    $("#color option[value='cornflowerblue']").hide();
+    $("#color option[value='darkslategrey']").hide();
+    $("#color option[value='gold']").hide();
     $("#color option[value='tomato']").show();
     $("#color option[value='steelblue']").show();
     $("#color option[value='dimgrey']").show();
@@ -167,20 +171,54 @@ $('#mail').on('input', function(e) {
 //credit card number
 $('#cc-num').on('input', function(e) {
   //check for valid credit card num and append error if needed
-  let $ccNumIsValid = false;
   let $ccNum = $(e.target).val();
-  let $regex = /^\d+$/;
-  //console.log($regex.test($ccNum));
+  let $regex = /^\d{13,16}$/;
   if ($regex.test($ccNum)) {
-      $('#error').remove();
+      $('#error').text('');
       $ccNumIsValid = true;
-      //console.log($regex.test($ccNum));
   }
   else {
-      $('#error').remove();
-      $('#error').text('Please enter a valid credit card number.');
+    if($ccNum.length < 13) {
+      $('#error').text('');
+      $('#error').text('Please enter at least 13 digits.');
       $ccNumIsValid = false;
-      //console.log($regex.test($ccNum));
+    } else if ($ccNum.length > 16) {
+      $('#error').text('');
+      $('#error').text('Please enter 16 digits or less.');
+      $ccNumIsValid = false;
+   }
+ }
+});
+//zipcode
+//
+$('#zip').on('input', function(e) {
+  //check for valid zip code and append error if needed
+  let $zip = $(e.target).val();
+  let $regex = /^\d{5}$/;
+  if ($regex.test($zip)) {
+    $('#error').text('');
+    $ccZipIsValid = true;
+  }
+  else {
+    $('#error').text('');
+    $('#error').text('Please enter a 5 digit zip code.');
+    $ccZipIsValid = false;
+  }
+});
+//CvV
+//
+$('#cvv').on('input', function(e) {
+  //check for valid cvv code and append error if needed
+  let $cvv = $(e.target).val();
+  let $regex = /^\d{3}$/;
+  if ($regex.test($cvv)) {
+    $('#error').text('');
+    $ccCvvIsValid = true;
+  }
+  else {
+    $('#error').text('');
+    $('#error').text('Please enter the 3 digit CVV on the back of your card.');
+    $ccCvvIsValid = false;
   }
 });
 //click handler on submit button tht validates form before submitting
@@ -201,7 +239,9 @@ $("button[type='submit']").on('click', function(e) {
       e.preventDefault();
     };
     if ($paymentMethod == 'credit card'){
+      if ($ccNumIsValid === false || $ccZipIsValid === false || $ccCvvIsValid === false) {
       e.preventDefault();
+      };
     }
 
 
