@@ -39,7 +39,10 @@ $('#color').hide();
 //setup select input listener on "Design"
 $("#design").change(function (e) {
   const $design = $(this).val();
-  if ($design !== 'Select Theme') {
+  if ($design === 'Select Theme') {
+    $('#color').hide();
+  }
+  else if ($design !== 'Select Theme') {
     $('#color').show();
   //conditionally show Color values based on Theme selection
   if ($design == 'js puns') {
