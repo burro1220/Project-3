@@ -4,7 +4,7 @@ let $nameIsValid = false;
 let $emailIsValid = false;
 let $ccNumIsValid = false;
 let $ccZipIsValid = false;
-let ccCvvIsValid = false;
+let $ccCvvIsValid = false;
 let $paymentMethod = 'credit card';
 //setup page:
 //
@@ -39,7 +39,8 @@ $('#color').hide();
 //setup select input listener on "Design"
 $("#design").change(function (e) {
   const $design = $(this).val();
-  $('#color').show();
+  if ($design !== 'Select Theme') {
+    $('#color').show();
   //conditionally show Color values based on Theme selection
   if ($design == 'js puns') {
     $("#color option[value='dimgrey']").hide();
@@ -55,6 +56,7 @@ $("#design").change(function (e) {
     $("#color option[value='tomato']").show();
     $("#color option[value='steelblue']").show();
     $("#color option[value='dimgrey']").show();
+  }
   }
 });
 //*************************************
@@ -239,10 +241,19 @@ $("button[type='submit']").on('click', function(e) {
       e.preventDefault();
     };
     if ($paymentMethod == 'credit card'){
-      if ($ccNumIsValid === false || $ccZipIsValid === false || $ccCvvIsValid === false) {
-      e.preventDefault();
+      if ($ccNumIsValid === false){
+        $('#error').text('Please enter a valid credit card number.');
+        e.preventDefault();
       };
-    }
+      if ($ccZipIsValid === false){
+        $('#error').text('Please enter a 5 digit zip code.');
+        e.preventDefault();
+      };
+      if ($ccCvvIsValid === false){
+        $('#error').text('Please enter a valid CVV code.');
+        e.preventDefault();
+      };
+    } 
 
 
 
