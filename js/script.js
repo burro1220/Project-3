@@ -33,8 +33,18 @@ $("button[type='submit']").prev().append($elem);
   });
 //*************************************
 //T-Shirt Info functionality:
-//
-//hide color options menu until deisgn is selected
+//FX handleColor
+function handleColor(arr1, arr2){
+  for(let i = 0; i < arr1.length; i++){
+    let string1 = "#color option[value=" + arr1[i] + "]";
+    $(string1).hide();
+  }
+  for(let y = 0; y < arr2.length; y++){
+    let string2 = "#color option[value=" + arr2[y] + "]";
+    $(string2).show();
+  }
+};
+
 $('#color').hide();
 //setup select input listener on "Design"
 $("#design").change(function (e) {
@@ -43,25 +53,16 @@ $("#design").change(function (e) {
     $('#color').hide();
   }
   else if ($design !== 'Select Theme') {
-    $('#color').show();
-  //conditionally show Color values based on Theme selection
-  if ($design == 'js puns') {
-    $("#color option[value='dimgrey']").hide();
-    $("#color option[value='tomato']").hide();
-    $("#color option[value='steelblue']").hide();
-    $("#color option[value='cornflowerblue']").show();
-    $("#color option[value='darkslategrey']").show();
-    $("#color option[value='gold']").show();
-  } else if ($design == 'heart js') {
-    $("#color option[value='cornflowerblue']").hide();
-    $("#color option[value='darkslategrey']").hide();
-    $("#color option[value='gold']").hide();
-    $("#color option[value='tomato']").show();
-    $("#color option[value='steelblue']").show();
-    $("#color option[value='dimgrey']").show();
-  }
-  }
-});
+    if ($design == 'js puns') {
+      //conditionally show Color values based on Theme selection
+      handleColor(['dimgrey', 'tomato', 'steelblue'], ['cornflowerblue', 'darkslategrey', 'gold']);
+      $('#color').show();
+    } else if ($design == 'heart js') {
+      handleColor( ['cornflowerblue', 'darkslategrey', 'gold'], ['dimgrey', 'tomato', 'steelblue']);
+      $('#color').show();
+    } 
+   }
+  });
 //*************************************
 //Register for Activities functionality
 //
