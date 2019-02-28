@@ -226,53 +226,40 @@ $('#cvv').on('input', function(e) {
     $ccCvvIsValid = false;
   }
 });
-//FX to check validation on submit
-function validate(check, errorMessage) {
- 
-  if(check === false){
-    console.log(check)
-    $('#error').text(errorMessage);
-    //NEED TO STOP FORM FROM SUBMITTING
-  }
-  else {
-    
-    $('#error').text('');
-  }
-}
+
 //click handler on submit button tht validates form before submitting
 $("button[type='submit']").on('click', function(e) {
-    //check name field and handle error
-    validate($nameIsValid, 'Please enter a first and last name');
-    
-    // if($nameIsValid === false){
-    //   $('#error').text('Please enter a first and last name.');
-    //   e.preventDefault();
-    // };
+    //check credit card validation
+    if ($paymentMethod == 'credit card'){
+            
+      if ($ccCvvIsValid === false){
+        $('#error').text('Please enter a valid CVV code.');
+        e.preventDefault();
+      }
+      if ($ccZipIsValid === false){
+        $('#error').text('Please enter a 5 digit zip code.');
+        e.preventDefault();
+      }
+    } if ($ccNumIsValid === false){
+      $('#error').text('Please enter a valid credit card number.');
+      e.preventDefault();
+    }
+
+     //check to make sure at least one activity is checked
+     if ( $("input:checked").length === 0){
+      $('#error').text('Please select at least one activity.');
+      e.preventDefault();
+    }
     //check email field and handle error
     if($emailIsValid === false) {
       $('#error').text('Please enter a valid email address.');
       e.preventDefault();
-    };
-    //check to make sure at least one activity is checked
-    if ( $("input:checked").length === 0){
-      $('#error').text('Please select at least one activity.');
+    }
+    //check name field and handle error
+    if($nameIsValid === false){
+      $('#error').text('Please enter a first and last name.');
       e.preventDefault();
-    };
-    if ($paymentMethod == 'credit card'){
-      if ($ccNumIsValid === false){
-        $('#error').text('Please enter a valid credit card number.');
-        e.preventDefault();
-      };
-      if ($ccZipIsValid === false){
-        $('#error').text('Please enter a 5 digit zip code.');
-        e.preventDefault();
-      };
-      if ($ccCvvIsValid === false){
-        $('#error').text('Please enter a valid CVV code.');
-        e.preventDefault();
-      };
-    } 
-
+    }
 
 
 })
