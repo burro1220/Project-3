@@ -35,6 +35,7 @@ $("button[type='submit']").prev().append($elem);
 //T-Shirt Info functionality:
 //FX handleColor
 function handleColor(arr1, arr2){
+  $('#color').val('');
   for(let i = 0; i < arr1.length; i++){
     let string1 = "#color option[value=" + arr1[i] + "]";
     $(string1).hide();
@@ -84,29 +85,16 @@ $("input[type='checkbox']").change(function (e) {
   setupCheckboxes('input[name="express"]', 'input[name="js-frameworks"]');
   setupCheckboxes('input[name="js-libs"]', 'input[name="node"]');
   setupCheckboxes('input[name="node"]', 'input[name="js-libs"]');
+  
   //Total Cost functionality
   let $totalCost = 0;
+  const $checkBoxes = $("input[type = 'checkbox']:checked");
+  $totalCost = $checkBoxes.length * 100;
   if($('input[name="all"]').is(':checked')) {
-    $totalCost += 200;
-  }
-  if($('input[name="js-frameworks"]').is(':checked')) {
     $totalCost += 100;
+
   }
-  if($('input[name="js-libs"]').is(':checked')) {
-    $totalCost += 100;
-  }
-  if($('input[name="express"]').is(':checked')) {
-    $totalCost += 100;
-  }
-  if($('input[name="node"]').is(':checked')) {
-    $totalCost += 100;
-  }
-  if($('input[name="build-tools"]').is(':checked')) {
-    $totalCost += 100;
-  }
-  if($('input[name="npm"]').is(':checked')) {
-    $totalCost += 100;
-  }
+
   //Remove Total Cost if present
   $('#totalCost').remove();
   //create and append div beneath fieldset[2] to hold $totalCost;
@@ -121,23 +109,34 @@ $("input[type='checkbox']").change(function (e) {
 $('#payment option').eq(0).hide();
 $('#credit-card').next().hide();
 $('#credit-card').next().next().hide();
+
+// FX to handle show/hide of payment options
+function handlePayment(arg1, arg2, arg3){
+  if (arg1 = 'show') {
+    $('#credit-card').show();
+  }
+  else $('#credit-card').hide();
+  if (arg2 = 'show') {
+    $('#credit-card').next().show();
+  }
+  else $('#credit-card').next().hide();
+  if (arg3 = 'show') {
+    $('#credit-card').next().next().show();
+  }
+  else $('#credit-card').next().next().hide();
+
+
+}
 //setup event listener for select payment and show info based on selection
 $("#payment").change(function (e) {
   $paymentMethod = $(this).val();
   if ($paymentMethod == 'credit card'){
-    $('#credit-card').show();
-    $('#credit-card').next().hide();
-    $('#credit-card').next().next().hide();
-    return $paymentMethod;
-  } else if($paymentMethod == 'paypal'){
-    $('#credit-card').hide();
-    $('#credit-card').next().show();
-    $('#credit-card').next().next().hide();
-  } else {
-    $('#credit-card').hide();
-    $('#credit-card').next().hide();
-    $('#credit-card').next().next().show();
-  }
+    handlePayment('show', 'hide', 'hide');
+    } else if($paymentMethod == 'paypal'){
+      handlePayment('hide', 'show', 'hide');
+    } else {
+      handlePayment('hide', 'hide', 'show');
+    }
 });
 //*************************************
 //Form validation functionality
@@ -227,13 +226,28 @@ $('#cvv').on('input', function(e) {
     $ccCvvIsValid = false;
   }
 });
+//FX to check validation on submit
+function validate(check, errorMessage) {
+ 
+  if(check === false){
+    console.log(check)
+    $('#error').text(errorMessage);
+    //NEED TO STOP FORM FROM SUBMITTING
+  }
+  else {
+    
+    $('#error').text('');
+  }
+}
 //click handler on submit button tht validates form before submitting
 $("button[type='submit']").on('click', function(e) {
     //check name field and handle error
-    if($nameIsValid === false){
-      $('#error').text('Please enter a first and last name.');
-      e.preventDefault();
-    };
+    validate($nameIsValid, 'Please enter a first and last name');
+    
+    // if($nameIsValid === false){
+    //   $('#error').text('Please enter a first and last name.');
+    //   e.preventDefault();
+    // };
     //check email field and handle error
     if($emailIsValid === false) {
       $('#error').text('Please enter a valid email address.');
