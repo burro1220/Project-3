@@ -227,6 +227,21 @@ $('#cvv').on('input', function(e) {
   }
 });
 
+//FX validate to refactor form validation onSubmit
+function validate(e, check, errorMessage) {
+
+  if (check === false) {
+    $('#error').text(errorMessage);
+
+    return e.preventDefault();
+  }
+  else {
+    $('#error').text('');
+    $(this).unbind('submit').submit();
+  }
+
+}
+
 //click handler on submit button tht validates form before submitting
 $("button[type='submit']").on('click', function(e) {
     //check credit card validation
@@ -256,10 +271,11 @@ $("button[type='submit']").on('click', function(e) {
       e.preventDefault();
     }
     //check name field and handle error
-    if($nameIsValid === false){
-      $('#error').text('Please enter a first and last name.');
-      e.preventDefault();
-    }
+    validate(e, $nameIsValid, 'Please enter a first and last name');
+    // if($nameIsValid === false){
+    //   $('#error').text('Please enter a first and last name.');
+    //   e.preventDefault();
+    // }
 
 
 })
