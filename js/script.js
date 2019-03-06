@@ -61,7 +61,7 @@ $("#design").change(function (e) {
     } else if ($design == 'heart js') {
       handleColor( ['cornflowerblue', 'darkslategrey', 'gold'], ['dimgrey', 'tomato', 'steelblue']);
       $('#color').show();
-    } 
+    }
    }
   });
 //*************************************
@@ -85,7 +85,7 @@ $("input[type='checkbox']").change(function (e) {
   setupCheckboxes('input[name="express"]', 'input[name="js-frameworks"]');
   setupCheckboxes('input[name="js-libs"]', 'input[name="node"]');
   setupCheckboxes('input[name="node"]', 'input[name="js-libs"]');
-  
+
   //Total Cost functionality
   let $totalCost = 0;
   const $checkBoxes = $("input[type = 'checkbox']:checked");
@@ -134,7 +134,7 @@ $("#payment").change(function (e) {
       $ccCvvIsValid = true;
       $ccNumIsValid = true;
       $ccZipIsValid = true;
-      
+
     }
 });
 //*************************************
@@ -226,13 +226,11 @@ $('#cvv').on('input', function(e) {
   }
 });
 
-$('#payment').on('c')
 //click handler on submit button tht validates form before submitting
 $("button[type='submit']").on('click', function(e) {
     //check credit card validation
-    
     if ($paymentMethod == 'credit card'){
-            
+
       if ($ccCvvIsValid === false){
         $('#error').text('Please enter a valid CVV code.');
         e.preventDefault();
