@@ -33,32 +33,37 @@ $("button[type='submit']").prev().append($elem);
   });
 //*************************************
 //T-Shirt Info functionality:
-//
-//hide color options menu until deisgn is selected
+//FX handleColor
+function handleColor(arr1, arr2){
+  $('#color').val('');
+  for(let i = 0; i < arr1.length; i++){
+    let string1 = "#color option[value=" + arr1[i] + "]";
+    $(string1).hide();
+  }
+  for(let y = 0; y < arr2.length; y++){
+    let string2 = "#color option[value=" + arr2[y] + "]";
+    $(string2).show();
+  }
+};
+
 $('#color').hide();
 //setup select input listener on "Design"
 $("#design").change(function (e) {
   const $design = $(this).val();
-  if ($design !== 'Select Theme') {
-    $('#color').show();
-  //conditionally show Color values based on Theme selection
-  if ($design == 'js puns') {
-    $("#color option[value='dimgrey']").hide();
-    $("#color option[value='tomato']").hide();
-    $("#color option[value='steelblue']").hide();
-    $("#color option[value='cornflowerblue']").show();
-    $("#color option[value='darkslategrey']").show();
-    $("#color option[value='gold']").show();
-  } else if ($design == 'heart js') {
-    $("#color option[value='cornflowerblue']").hide();
-    $("#color option[value='darkslategrey']").hide();
-    $("#color option[value='gold']").hide();
-    $("#color option[value='tomato']").show();
-    $("#color option[value='steelblue']").show();
-    $("#color option[value='dimgrey']").show();
+  if ($design === 'Select Theme') {
+    $('#color').hide();
   }
-  }
-});
+  else if ($design !== 'Select Theme') {
+    if ($design == 'js puns') {
+      //conditionally show Color values based on Theme selection
+      handleColor(['dimgrey', 'tomato', 'steelblue'], ['cornflowerblue', 'darkslategrey', 'gold']);
+      $('#color').show();
+    } else if ($design == 'heart js') {
+      handleColor( ['cornflowerblue', 'darkslategrey', 'gold'], ['dimgrey', 'tomato', 'steelblue']);
+      $('#color').show();
+    } 
+   }
+  });
 //*************************************
 //Register for Activities functionality
 //
@@ -80,29 +85,16 @@ $("input[type='checkbox']").change(function (e) {
   setupCheckboxes('input[name="express"]', 'input[name="js-frameworks"]');
   setupCheckboxes('input[name="js-libs"]', 'input[name="node"]');
   setupCheckboxes('input[name="node"]', 'input[name="js-libs"]');
+  
   //Total Cost functionality
   let $totalCost = 0;
+  const $checkBoxes = $("input[type = 'checkbox']:checked");
+  $totalCost = $checkBoxes.length * 100;
   if($('input[name="all"]').is(':checked')) {
-    $totalCost += 200;
-  }
-  if($('input[name="js-frameworks"]').is(':checked')) {
     $totalCost += 100;
+
   }
-  if($('input[name="js-libs"]').is(':checked')) {
-    $totalCost += 100;
-  }
-  if($('input[name="express"]').is(':checked')) {
-    $totalCost += 100;
-  }
-  if($('input[name="node"]').is(':checked')) {
-    $totalCost += 100;
-  }
-  if($('input[name="build-tools"]').is(':checked')) {
-    $totalCost += 100;
-  }
-  if($('input[name="npm"]').is(':checked')) {
-    $totalCost += 100;
-  }
+
   //Remove Total Cost if present
   $('#totalCost').remove();
   //create and append div beneath fieldset[2] to hold $totalCost;
@@ -117,6 +109,8 @@ $("input[type='checkbox']").change(function (e) {
 $('#payment option').eq(0).hide();
 $('#credit-card').next().hide();
 $('#credit-card').next().next().hide();
+
+
 //setup event listener for select payment and show info based on selection
 $("#payment").change(function (e) {
   $paymentMethod = $(this).val();
@@ -124,16 +118,24 @@ $("#payment").change(function (e) {
     $('#credit-card').show();
     $('#credit-card').next().hide();
     $('#credit-card').next().next().hide();
-    return $paymentMethod;
-  } else if($paymentMethod == 'paypal'){
-    $('#credit-card').hide();
-    $('#credit-card').next().show();
-    $('#credit-card').next().next().hide();
-  } else {
-    $('#credit-card').hide();
-    $('#credit-card').next().hide();
-    $('#credit-card').next().next().show();
-  }
+
+    } else if($paymentMethod == 'paypal'){
+      $('#credit-card').hide();
+      $('#credit-card').next().show();
+      $('#credit-card').next().next().hide();
+      $ccCvvIsValid = true;
+      $ccNumIsValid = true;
+      $ccZipIsValid = true;
+
+      } else {
+      $('#credit-card').hide();
+      $('#credit-card').next().hide();
+      $('#credit-card').next().next().show();
+      $ccCvvIsValid = true;
+      $ccNumIsValid = true;
+      $ccZipIsValid = true;
+      
+    }
 });
 //*************************************
 //Form validation functionality
@@ -158,7 +160,7 @@ $('#name').on('input', function(e) {
 $('#mail').on('input', function(e) {
   //check for valid email and append error if needed
   let $email = $(e.target).val();
-  let $regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  let $regex = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
   if ($regex.test($email)) {
       $('.error').remove();
       $emailIsValid = true;
@@ -223,38 +225,42 @@ $('#cvv').on('input', function(e) {
     $ccCvvIsValid = false;
   }
 });
+
+$('#payment').on('c')
 //click handler on submit button tht validates form before submitting
 $("button[type='submit']").on('click', function(e) {
-    //check name field and handle error
-    if($nameIsValid === false){
-      $('#error').text('Please enter a first and last name.');
+    //check credit card validation
+    
+    if ($paymentMethod == 'credit card'){
+            
+      if ($ccCvvIsValid === false){
+        $('#error').text('Please enter a valid CVV code.');
+        e.preventDefault();
+      }
+      if ($ccZipIsValid === false){
+        $('#error').text('Please enter a 5 digit zip code.');
+        e.preventDefault();
+      }
+    } if ($ccNumIsValid === false){
+      $('#error').text('Please enter a valid credit card number.');
       e.preventDefault();
-    };
+    }
+
+     //check to make sure at least one activity is checked
+     if ( $("input:checked").length === 0){
+      $('#error').text('Please select at least one activity.');
+      e.preventDefault();
+    }
     //check email field and handle error
     if($emailIsValid === false) {
       $('#error').text('Please enter a valid email address.');
       e.preventDefault();
-    };
-    //check to make sure at least one activity is checked
-    if ( $("input:checked").length === 0){
-      $('#error').text('Please select at least one activity.');
-      e.preventDefault();
-    };
-    if ($paymentMethod == 'credit card'){
-      if ($ccNumIsValid === false){
-        $('#error').text('Please enter a valid credit card number.');
-        e.preventDefault();
-      };
-      if ($ccZipIsValid === false){
-        $('#error').text('Please enter a 5 digit zip code.');
-        e.preventDefault();
-      };
-      if ($ccCvvIsValid === false){
-        $('#error').text('Please enter a valid CVV code.');
-        e.preventDefault();
-      };
-    } 
-
+    }
+    //check name field and handle error
+    if($nameIsValid === false){
+       $('#error').text('Please enter a first and last name.');
+       e.preventDefault();
+    }
 
 
 })
